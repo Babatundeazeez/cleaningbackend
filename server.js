@@ -3,6 +3,7 @@ const dotenv = require("dotenv")
 const cors = require('cors')
 const connectedMongoDB = require("./ConnectedToDB")
 const bookingRouters = require("./Router/BookingRouter")
+const messageRouter = require("./Router/MessageRouter")
 
 
 dotenv.config()
@@ -17,6 +18,7 @@ app.use(express.urlencoded({extended : true}))
 
 
 app.use('/api/booking', bookingRouters)
+app.use('/api/message', messageRouter)
 
 
 connectedMongoDB()
