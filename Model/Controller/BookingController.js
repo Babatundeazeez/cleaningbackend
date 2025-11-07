@@ -46,7 +46,7 @@ const createBooking = async (req, res) =>{
                  console.log("Email sent successfully!");
                 
             } catch (error) {
-                console.error("Email send failed:", emailError);
+                console.error("Email send failed:", error);
                 
             }
 
