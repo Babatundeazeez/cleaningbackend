@@ -42,7 +42,7 @@ const createMessage = async(req, res) =>{
             console.log("Message sent successfully");
 
         } catch (error) {
-            console.error("Message send failed:", emailError);
+            console.error("Message send failed:", error);
             
         }
         
