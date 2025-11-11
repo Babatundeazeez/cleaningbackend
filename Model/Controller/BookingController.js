@@ -15,18 +15,23 @@ const createBooking = async (req, res) =>{
             })
         }
         
+
+        //configure Hostinger SMPT
         const transporter = nodemailer.createTransport({
         
-            service: "gmail",
+            //service: "gmail",
+            host: "smtp.hostinger.com",
+            port: 465,
+            secure: true, // true for 465, false for 587
             auth: {
-                user: process.env.nodemailer_email,
-                pass: process.env.nodemailer_Password
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
             },
          });
 
          const sendEmails = {
-            from: `"Suntim Cleaning Services" <${process.env.nodemailer_email}>`,
-            to: process.env.owner_email,
+            from: `"Suntim Cleaning Services" <${process.env.EMAIL_USER}>`,
+            to: process.env.OWNER_EMAIL,
             subject: "New Cleaning Booking Received 🧹",
             html: `
                         <h3>New Booking Details</h3>
@@ -43,7 +48,7 @@ const createBooking = async (req, res) =>{
             try {
                 await transporter.sendMail(sendEmails);
 
-                 console.log("Email sent successfully!");
+                 console.log("Booking Email sent successfully!");
                 
             } catch (error) {
                 console.error("Email send failed:", error);

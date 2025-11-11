@@ -17,16 +17,21 @@ const createMessage = async(req, res) =>{
         }
         //send message to main
         const transporter = nodemailer.createTransport({
-            service: "gmail",
+
+            //service: "gmail",
+            
+             host: "smtp.hostinger.com",
+             port: 465,
+             secure: true, // true for 465, false for 587
             auth: {
-                user: process.env.nodemailer_email,
-                pass: process.env.nodemailer_Password
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
             },
 
         });
         const sendMessage = {
-            from: `"Suntim Cleaning Services" <${process.env.nodemailer_email}>`,
-            to: process.env.owner_email,
+            from: `"Suntim Cleaning Services" <${process.env.EMAIL_USER}>`,
+            to: process.env.OWNER_EMAIL,
             subject: "Inquiry mssage Received 🧹",
             html: `
                         <h3>New Inquiry Details</h3>
