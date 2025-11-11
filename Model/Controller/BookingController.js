@@ -1,9 +1,20 @@
 const bookingModels = require("../BookinModel");
 const nodemailer = require("nodemailer")
+const sgMail = require("@sendgrid/mail")
+
+
+
+
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
+
+
+
 
 const createBooking = async (req, res) =>{
     try {
-        //creating booking
+        //creating booking to database
         const booking = await bookingModels.create({
             ...req.body
         })
@@ -16,22 +27,22 @@ const createBooking = async (req, res) =>{
         }
         
 
-        //configure Hostinger SMPT
-        const transporter = nodemailer.createTransport({
+        // //configure Hostinger SMPT
+        // const transporter = nodemailer.createTransport({
         
-            //service: "gmail",
-            host: "smtp.hostinger.com",
-            port: 465,
-            secure: true, // true for 465, false for 587
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            },
-         });
+        //     //service: "gmail",
+        //     host: "smtp.hostinger.com",
+        //     port: 465,
+        //     secure: true, // true for 465, false for 587
+        //     auth: {
+        //         user: process.env.EMAIL_USER,
+        //         pass: process.env.EMAIL_PASS
+        //     },
+        //  }); 
 
          const sendEmails = {
-            from: `"Suntim Cleaning Services" <${process.env.EMAIL_USER}>`,
-            to: process.env.OWNER_EMAIL,
+            from: `"Suntim Cleaning Services" <${process.env.FROM_EMAIL}>`,
+            to: process.env.OWNER_EMAILs,
             subject: "New Cleaning Booking Received 🧹",
             html: `
                         <h3>New Booking Details</h3>
@@ -46,7 +57,8 @@ const createBooking = async (req, res) =>{
             };
 
             try {
-                await transporter.sendMail(sendEmails);
+               // await transporter.sendMail(sendEmails);
+               await sgMail.send(sendEmails)
 
                  console.log("Booking Email sent successfully!");
                 

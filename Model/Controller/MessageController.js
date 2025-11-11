@@ -1,9 +1,11 @@
 const messageModel = require("../MessageModel")
 const nodemailer = require("nodemailer")
 
+const  sgMail = require("@sendgrid/mail")
+
 const createMessage = async(req, res) =>{
     try {
-        //create message
+        //create message to database
         const messages = await messageModel.create({
             ...req.body
         })
@@ -16,22 +18,24 @@ const createMessage = async(req, res) =>{
 
         }
         //send message to main
-        const transporter = nodemailer.createTransport({
+        // const transporter = nodemailer.createTransport({
 
-            //service: "gmail",
+        //     //service: "gmail",
             
-             host: "smtp.hostinger.com",
-             port: 465,
-             secure: true, // true for 465, false for 587
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            },
+        //      host: "smtp.hostinger.com",
+        //      port: 465,
+        //      secure: true, // true for 465, false for 587
+        //     auth: {
+        //         user: process.env.EMAIL_USER,
+        //         pass: process.env.EMAIL_PASS
+        //     },
 
-        });
+        // });
+
+
         const sendMessage = {
-            from: `"Suntim Cleaning Services" <${process.env.EMAIL_USER}>`,
-            to: process.env.OWNER_EMAIL,
+            from: `"Suntim Cleaning Services" <${process.env.FROM_EMAIL}>`,
+            to: process.env.OWNER_EMAILs,
             subject: "Inquiry mssage Received 🧹",
             html: `
                         <h3>New Inquiry Details</h3>
@@ -43,7 +47,8 @@ const createMessage = async(req, res) =>{
             `,
         };
         try {
-            await transporter.sendMail(sendMessage);
+            // await transporter.sendMail(sendMessage);
+            await sgMail.send(sendMessage)
             console.log("Message sent successfully");
 
         } catch (error) {
